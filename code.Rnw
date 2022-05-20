@@ -1,0 +1,229 @@
+\documentclass{article}
+\begin{document}
+
+
+<<Rchunk1, echo = FALSE, warning = FALSE, fig.keep = TRUE, results = "hide", include = FALSE>>=
+
+##################
+#loading packages#
+##################
+
+library(knitr)
+library(dplyr)
+library(evaluate)
+library(ggplot2)
+library(cowplot)
+library(readr)
+library(float)
+library(tidyverse)
+library(xtable)
+options(xtable.comment = FALSE)
+library(psych)
+library(corrplot)
+library("psych")
+library(car)
+
+@
+
+<<Rchunk2, echo = FALSE, warning = FALSE, fig.keep = TRUE, results = "hide", include = FALSE>>=
+
+###############
+#import survey#
+###############
+
+setwd("~/Desktop/Unauthorized immigrant framing/Social Science Research")
+uaisurvey <- read_csv("survey.csv")
+View(uaisurvey)
+uaisurvey <- uaisurvey[-c(1,2),]
+View(uaisurvey)
+@
+
+<<Rchunk3, echo = FALSE, warning = FALSE, fig.keep = TRUE, results = "asis", include = FALSE>>=
+
+###########
+#variables#
+###########
+
+#1 Honest
+uaisurvey$ill_honest <- uaisurvey$Q2.1_1
+uaisurvey$ill_honest[uaisurvey$ill_honest == "1 (not well at all)"] <- 1
+uaisurvey$ill_honest[uaisurvey$ill_honest == "5 (very well)"] <- 5
+
+uaisurvey$undoc_honest <- uaisurvey$Q2.2_1
+uaisurvey$undoc_honest[uaisurvey$undoc_honest == "1 (not well at all)"] <- 1
+uaisurvey$undoc_honest[uaisurvey$undoc_honest == "5 (very well)"] <- 5
+
+uaisurvey$honest <- ifelse(is.na(uaisurvey$ill_honest), uaisurvey$undoc_honest, uaisurvey$ill_honest)
+uaisurvey$honest <- as.numeric(uaisurvey$honest)
+
+#2 Hardworking
+
+uaisurvey$ill_hardworking <- uaisurvey$Q2.1_2
+uaisurvey$ill_hardworking[uaisurvey$ill_hardworking == "1 (not well at all)"] <- 1
+uaisurvey$ill_hardworking[uaisurvey$ill_hardworking == "5 (very well)"] <- 5
+
+uaisurvey$undoc_hardworking <- uaisurvey$Q2.2_2
+uaisurvey$undoc_hardworking[uaisurvey$undoc_hardworking == "1 (not well at all)"] <- 1
+uaisurvey$undoc_hardworking[uaisurvey$undoc_hardworking == "5 (very well)"] <- 5
+
+uaisurvey$hardworking <- ifelse(is.na(uaisurvey$ill_hardworking), uaisurvey$undoc_hardworking, uaisurvey$ill_hardworking)
+uaisurvey$hardworking <- as.numeric(uaisurvey$hardworking)
+
+#3 Unlawful
+
+uaisurvey$ill_unlawful <- uaisurvey$Q2.1_3
+uaisurvey$ill_unlawful[uaisurvey$ill_unlawful == "1 (not well at all)"] <- 1
+uaisurvey$ill_unlawful[uaisurvey$ill_unlawful == "5 (very well)"] <- 5
+
+uaisurvey$undoc_unlawful <- uaisurvey$Q2.2_3
+uaisurvey$undoc_unlawful[uaisurvey$undoc_unlawful == "1 (not well at all)"] <- 1
+uaisurvey$undoc_unlawful[uaisurvey$undoc_unlawful == "5 (very well)"] <- 5
+
+uaisurvey$unlawful <- ifelse(is.na(uaisurvey$ill_unlawful), uaisurvey$undoc_unlawful, uaisurvey$ill_unlawful)
+uaisurvey$unlawful <- as.numeric(uaisurvey$unlawful)
+
+#4 Violent
+
+uaisurvey$ill_violent <- uaisurvey$Q2.1_4
+uaisurvey$ill_violent[uaisurvey$ill_violent == "1 (not well at all)"] <- 1
+uaisurvey$ill_violent[uaisurvey$ill_violent == "5 (very well)"] <- 5
+
+uaisurvey$undoc_violent <- uaisurvey$Q2.2_4
+uaisurvey$undoc_violent[uaisurvey$undoc_violent == "1 (not well at all)"] <- 1
+uaisurvey$undoc_violent[uaisurvey$undoc_violent == "5 (very well)"] <- 5
+
+uaisurvey$violent <- ifelse(is.na(uaisurvey$ill_violent), uaisurvey$undoc_violent, uaisurvey$ill_violent)
+uaisurvey$violent <- as.numeric(uaisurvey$violent)
+
+#5 Intelligent
+
+uaisurvey$ill_intelligent <- uaisurvey$Q2.1_5
+uaisurvey$ill_intelligent[uaisurvey$ill_intelligent == "1 (not well at all)"] <- 1
+uaisurvey$ill_intelligent[uaisurvey$ill_intelligent == "5 (very well)"] <- 5
+
+uaisurvey$undoc_intelligent <- uaisurvey$Q2.2_5
+uaisurvey$undoc_intelligent[uaisurvey$undoc_intelligent == "1 (not well at all)"] <- 1
+uaisurvey$undoc_intelligent[uaisurvey$undoc_intelligent == "5 (very well)"] <- 5
+
+uaisurvey$intelligent <- ifelse(is.na(uaisurvey$ill_intelligent), uaisurvey$undoc_intelligent, uaisurvey$ill_intelligent)
+uaisurvey$intelligent <- as.numeric(uaisurvey$intelligent)
+
+#6 Uneducated
+
+uaisurvey$ill_uneducated <- uaisurvey$Q2.1_6
+uaisurvey$ill_uneducated[uaisurvey$ill_uneducated == "1 (not well at all)"] <- 1
+uaisurvey$ill_uneducated[uaisurvey$ill_uneducated == "5 (very well)"] <- 5
+
+uaisurvey$undoc_uneducated <- uaisurvey$Q2.2_6
+uaisurvey$undoc_uneducated[uaisurvey$undoc_uneducated == "1 (not well at all)"] <- 1
+uaisurvey$undoc_uneducated[uaisurvey$undoc_uneducated == "5 (very well)"] <- 5
+
+uaisurvey$uneducated <- ifelse(is.na(uaisurvey$ill_uneducated), uaisurvey$undoc_uneducated, uaisurvey$ill_uneducated)
+uaisurvey$uneducated <- as.numeric(uaisurvey$uneducated)
+
+#7 Lazy
+
+uaisurvey$ill_lazy <- uaisurvey$Q2.1_7
+uaisurvey$ill_lazy[uaisurvey$ill_lazy == "1 (not well at all)"] <- 1
+uaisurvey$ill_lazy[uaisurvey$ill_lazy == "5 (very well)"] <- 5
+
+uaisurvey$undoc_lazy <- uaisurvey$Q2.2_7
+uaisurvey$undoc_lazy[uaisurvey$undoc_lazy == "1 (not well at all)"] <- 1
+uaisurvey$undoc_lazy[uaisurvey$undoc_lazy == "5 (very well)"] <- 5
+
+uaisurvey$lazy <- ifelse(is.na(uaisurvey$ill_lazy), uaisurvey$undoc_lazy, uaisurvey$ill_lazy)
+uaisurvey$lazy <- as.numeric(uaisurvey$lazy)
+
+#8 Immoral
+
+uaisurvey$ill_immoral <- uaisurvey$Q2.1_8
+uaisurvey$ill_immoral[uaisurvey$ill_immoral == "1 (not well at all)"] <- 1
+uaisurvey$ill_immoral[uaisurvey$ill_immoral == "5 (very well)"] <- 5
+
+uaisurvey$undoc_immoral <- uaisurvey$Q2.2_8
+uaisurvey$undoc_immoral[uaisurvey$undoc_immoral == "1 (not well at all)"] <- 1
+uaisurvey$undoc_immoral[uaisurvey$undoc_immoral == "5 (very well)"] <- 5
+
+uaisurvey$immoral <- ifelse(is.na(uaisurvey$ill_immoral), uaisurvey$undoc_immoral, uaisurvey$ill_immoral)
+uaisurvey$immoral <- as.numeric(uaisurvey$immoral)
+
+#9 Loyal
+
+uaisurvey$ill_loyal <- uaisurvey$Q2.1_9
+uaisurvey$ill_loyal[uaisurvey$ill_loyal == "1 (not well at all)"] <- 1
+uaisurvey$ill_loyal[uaisurvey$ill_loyal == "5 (very well)"] <- 5
+
+uaisurvey$undoc_loyal <- uaisurvey$Q2.2_9
+uaisurvey$undoc_loyal[uaisurvey$undoc_loyal == "1 (not well at all)"] <- 1
+uaisurvey$undoc_loyal[uaisurvey$undoc_loyal == "5 (very well)"] <- 5
+
+uaisurvey$loyal <- ifelse(is.na(uaisurvey$ill_loyal), uaisurvey$undoc_loyal, uaisurvey$ill_loyal)
+uaisurvey$loyal <- as.numeric(uaisurvey$loyal)
+
+#10 Responsible
+
+uaisurvey$ill_responsible <- uaisurvey$Q2.1_10
+uaisurvey$ill_responsible[uaisurvey$ill_responsible == "1 (not well at all)"] <- 1
+uaisurvey$ill_responsible[uaisurvey$ill_responsible == "5 (very well)"] <- 5
+
+uaisurvey$undoc_responsible <- uaisurvey$Q2.2_10
+uaisurvey$undoc_responsible[uaisurvey$undoc_responsible == "1 (not well at all)"] <- 1
+uaisurvey$undoc_responsible[uaisurvey$undoc_responsible == "5 (very well)"] <- 5
+
+uaisurvey$responsible <- ifelse(is.na(uaisurvey$ill_responsible), uaisurvey$undoc_responsible, uaisurvey$ill_responsible)
+uaisurvey$responsible <- as.numeric(uaisurvey$responsible)
+
+@
+
+
+<<RChunk4, echo = FALSE, warning = FALSE, fig.keep = TRUE, results = "asis">>=
+
+#########################
+#mean stereotype ratings#
+#########################
+
+mean(uaisurvey$hardworking, na.rm = TRUE)
+mean(uaisurvey$responsible, na.rm = TRUE)
+mean(uaisurvey$intelligent, na.rm = TRUE)
+mean(uaisurvey$loyal, na.rm = TRUE)
+mean(uaisurvey$honest, na.rm = TRUE)
+mean(uaisurvey$uneducated, na.rm = TRUE)
+mean(uaisurvey$unlawful, na.rm = TRUE)
+mean(uaisurvey$immoral, na.rm = TRUE)
+mean(uaisurvey$violent, na.rm = TRUE)
+mean(uaisurvey$lazy, na.rm = TRUE)
+#########
+#TABLE 1#
+#########
+
+allwords_matrix <- matrix(c(4.29, 3.65, 3.55, 3.53, 3.39, 2.37, 2.33, 1.75, 1.74, 1.59), ncol = 1, byrow = TRUE)
+colnames(allwords_matrix) <- "Mean rating"
+rownames(allwords_matrix) <- c("Hardworking", "Responsible", "Intelligent", "Loyal", "Honest", "Uneducated", "Unlawful", "Immoral", "Violent", "Lazy")
+allwords_t <- as.table(allwords_matrix)
+
+allwords_table <- xtable(allwords_t, caption = "Overall mean ratings")
+allwords_table
+
+@
+
+\begin{landscape}
+
+<<RcunRchunk 5, echo = FALSE, warning = FALSE, fig.keep = TRUE, results = "asis">>=
+
+#########
+#TABLE 2#
+#########
+
+open_matrix <- matrix(c(161, 144, 98, 68, 68, 54, 46, 23, 18, 15, 14, 13, 11, 11, 9, 9, 9, 8, 8, 8, 7, 6, 5, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0.97, 0.98, 0.98, 0.94, 0.94, 0.97, 0.96, 0.98, 0.98, 0.98, 0.99, 1.00, 0.99, 1.00, 0.99, 1.00, 0.98, 1.00, 0.99, 1.00, 0.99, 1.00, 0.99, 1.00, 0.99, 0.99, 1.00, 1.00, 0.99, 1.00, 0.99, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 0.93, 0.96, 0.93, 0.80, 0.75, 0.89, 0.81, 0.75, 0.77, 0.75, 0.84, 0.96, 0.85, 0.91, 0.71, 0.94, 0.55, 1.00, 0.82, 1.00, 0.39, 0.91, 0.33, 1.00, 0.57, 0.57, 1.00, 0.86, 0.57, 0.86, 0.57, 1.00, 0.80, 1.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00), ncol = 3, byrow = FALSE)
+colnames(open_matrix) <- c("Number of occurences", "Intercoder agreement", "Krippendorff's Alpha")
+rownames(open_matrix) <- c("Better life", "Hardworking", "Family-oriented", "Unlawful", "Fleeing/escaping hardship", "No typical unauthorized immigrant", "Criticize US immigration process", "Risk-taking, brave", "Respondent talks about their connection/experience", "Contributions to US", "Hispanic/Latino", "Jobs Americans don't want", "Latin America", "Honest", "Uneducated", "Nobody illegal on stolen land", "US doesn't treat well", "Loyal", "Are trying or should try to become legal", "American dream", "Poor/low socio-economic status", "Responsible", "Not Hispanic/Latino", "Intelligent", "Violent", "Unfair/disrespectful to legal residents", "Third-world/poor country", "Food", "Opposition to terminology", "Europe", "Asia", "Gardener", "Immoral", "Anti-unauthorized immigration = racism", "Middle East", "Lazy", "Construction", "Maid", "Unemployed", "Religious/church-going", "Stealing Americans jobs", "Seeking welfare")
+o_table <- as.table(open_matrix)
+
+open_table <- xtable(o_table, caption = "Frequencies of variables in and intercoder agreement for open-ended responses", digits = c(0,0,2,2))
+
+open_table
+
+@
+\end{landscape}
+
+\end{document}
