@@ -1,6 +1,13 @@
 ## What do respondents really mean? Using mixed data and methods to interpret mixed results
 Dataset and code for using mixed data and mixed methods to analyze public attitudes towards unauthorized immigrants.
 
+### Files
+
+* R script: mixed.data.mixed.methods.R
+* All data: fullsurvey.csv
+* Qualtrics output: uaisurvey.csv
+* Content analysis: openended.csv
+
 ### Dependent Variables
 
 #### Closed-ended responses
