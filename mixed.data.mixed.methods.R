@@ -194,30 +194,33 @@ open_table_mini
 
 ## COMBINE CLOSED AND OPEN ENDED RESPONSES ##
 
-openended <- read_csv("openended.csv", skip = 1) #load in openended coding
-View(openended) 
+#openended <- read_csv("openended.csv", skip = 1) #load in openended coding
+#View(openended) 
 
 #create unique respondent IDs
-create_unique_ids <- function(n, seed_no = 1, char_len = 5){
-  set.seed(seed_no)
-  pool <- c(letters, LETTERS, 0:9)
-  res <- character(n) # pre-allocating vector is much faster than growing it
-  for(i in seq(n)){
-    this_res <- paste0(sample(pool, char_len, replace = TRUE), collapse = "")
-    while(this_res %in% res){ # if there was a duplicate, redo
-      this_res <- paste0(sample(pool, char_len, replace = TRUE), collapse = "")
-    }
-    res[i] <- this_res
-  }
-  res
-}
+#create_unique_ids <- function(n, seed_no = 1, char_len = 5){
+#  set.seed(seed_no)
+#  pool <- c(letters, LETTERS, 0:9)
+#  res <- character(n) # pre-allocating vector is much faster than growing it
+#  for(i in seq(n)){
+#    this_res <- paste0(sample(pool, char_len, replace = TRUE), collapse = "")
+#    while(this_res %in% res){ # if there was a duplicate, redo
+#      this_res <- paste0(sample(pool, char_len, replace = TRUE), collapse = "")
+#    }
+#    res[i] <- this_res
+#  }
+#  res
+#}
 
-uaisurvey$ID <- create_unique_ids(412)
+#uaisurvey$ID <- create_unique_ids(412)
 
-write_csv(uaisurvey, file = "uaisurvey.csv")
+#write_csv(uaisurvey, file = "uaisurvey.csv")
 
-fullsurvey <- full_join(uaisurvey, openended, by = "ID") #attempt to join by ID
-write_csv(fullsurvey, file = "fullsurvey.csv")
+#fullsurvey <- full_join(uaisurvey, openended, by = "ID") #attempt to join by ID
+#write_csv(fullsurvey, file = "fullsurvey.csv")
+
+#above is how I created fullsurvey but now that it is created we can upload it normally
+fullsurvey <- read.csv("fullsurvey.csv")
 
 ## DATA ANALYSIS COMPARING CLOSED- AND OPEN-ENDED RESPONSES
 
