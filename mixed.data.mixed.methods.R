@@ -1,6 +1,5 @@
 ## LOAD PACKAGES ##
 
-library(knitr)
 library(dplyr)
 library(evaluate)
 library(ggplot2)
@@ -17,7 +16,7 @@ library(car)
 
 ## IMPORT SURVEY DATA ##
 
-setwd("~/Desktop/Unauthorized immigrant framing/mixed methods journal/") #set working directory to appropriate folder
+setwd("~/Documents/GitHub/mixed_datamethods") #set working directory to appropriate folder
 #Tommy - you will have to change the working directory above for yourself
 uaisurvey <- read_csv("survey.csv") #read in csv file
 View(uaisurvey) #view survey results
