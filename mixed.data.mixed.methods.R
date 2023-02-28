@@ -3,7 +3,6 @@
 library(dplyr)
 library(evaluate)
 library(ggplot2)
-library(cowplot)
 library(readr)
 library(float)
 library(tidyverse)
@@ -237,13 +236,13 @@ fullsurvey %>%
 # no need to complete everything by Monday
 
 ## 1. Rename the following variables
-# Q4 age
-# Q5 sex
-# Q6 race
-# Q7 hispaniclatino
-# Q8 party
-# Q10 ideology
-# Q12 immigrationstatus
+fullsurvey <- fullsurvey %>% rename("age" = "Q4") # Q4 age
+fullsurvey <- fullsurvey %>% rename("sex" = "Q5") # Q5 sex
+fullsurvey <- fullsurvey %>% rename("race" = "Q6") # Q6 race
+fullsurvey <- fullsurvey %>% rename("hispaniclatino" = "Q7") # Q7 hispaniclatino
+fullsurvey <- fullsurvey %>% rename("party" = "Q8") # Q8 party
+fullsurvey <- fullsurvey %>% rename("ideology" = "Q10") # Q10 ideology
+fullsurvey <- fullsurvey %>% rename("immigrationstatus" = "Q12") # Q12 immigrationstatus
 
 ## 2. Rename the open-ended variables (see README.md file on GitHub for full list)
 # have them be single word even if combined
