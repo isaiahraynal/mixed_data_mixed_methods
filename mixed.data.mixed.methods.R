@@ -16,6 +16,7 @@ library(car)
 ## IMPORT SURVEY DATA ##
 
 setwd("~/Documents/GitHub/mixed_datamethods") #set working directory to appropriate folder
+fullsurvey <- read.csv("fullsurvey.csv") #open relevant csv
 #Tommy - you will have to change the working directory above for yourself
 uaisurvey <- read_csv("survey.csv") #read in csv file
 View(uaisurvey) #view survey results
@@ -250,69 +251,43 @@ fullsurvey <- fullsurvey %>% rename("immigrationstatus" = "Q12") # Q12 immigrati
 ## 2. Rename the open-ended variables (see README.md file on GitHub for full list)
 # have them be single word even if combined
 # ex. rename `American dream` to americandream or AmericanDream
-openended <- openended %>% rename("Europe" = "X.4")
-openended <- openended %>% rename("NotHispanicLatino" = "X.3")
-openended <- openended %>% rename("HispanicLatino" = "Race...ethnicity")
-openended <- openended %>% rename("Treatment" = "X")
-openended <- openended %>% rename("ID" = "X.1")
-openended <- openended %>% rename("Response" = "X.2")
-openended <- openended %>% rename("LatinAmerica" = "Nationality")
-openended <- openended %>% rename("MiddleEast" = "X.5")
-openended <- openended %>% rename("Asia" = "X.6")
-openended <- openended %>% rename("ThirdWorld/PoorCountry" = "X.7")
-openended <- openended %>% rename("Not Hispanic/Latino" = "X.3")
-openended <- openended %>% rename("Not Hispanic/Latino" = "NotHispanicLatino")
-openended <- openended %>% rename("Hispanic/Latino" = "HispanicLatino")
-openended <- openended %>% rename("Third World/Poor Country" = "ThirdWorld/PoorCountry")
-openended <- openended %>% rename("Construction" = "X.8")
-openended <- openended %>% rename("Construction" = "Occupation")
-openended <- openended %>% rename("Food" = "Construction")
-openended <- openended %>% rename("Construction" = "Occupation")
-openended <- openended %>% rename("Gardener" = "X.9")
-openended <- openended %>% rename("Maid" = "X.10")
-openended <- openended %>% rename("Unemployed" = "X.11")
-openended <- openended %>% rename("Job Americans Don't Want" = "X.12")
-openended <- openended %>% rename("Hardworking" = "Characteristics")
-openended <- openended %>% rename("Honest" = X.13)
-openended <- openended %>% rename("Loyal" = X.14)
-openended <- openended %>% rename("Intelligent" = X.15)
-openended <- openended %>% rename("Responsible" = X.16)
-openended <- openended %>% rename("Immoral" = X.17)
-openended <- openended %>% rename("Lazy" = X.18)
-openended <- openended %>% rename("Uneducated" = X.19)
-openended <- openended %>% rename("Unlawful" = X.20)
-openended <- openended %>% rename("Violent" = X.21)
-openended <- openended %>% rename("Family-oriented" = X.22)
-openended <- openended %>% rename("Religious/church-going" = X.23)
-openended <- openended %>% rename("PoorLowSocioeconomicStatus" = X.24)
-openended <- openended %>% rename("StealingAmericansJobs" = X.25)
-openended <- openended %>% rename("SeekingWelfare" = X.26)
-openended <- openended %>% rename("BetterLife" = X.27)
-openended <- openended %>% rename("FleeingEscapingHardship" = X.28)
-openended <- openended %>% rename("No'Typical'UnauthorizedImmigrant" = X.29)
-openended <- openended %>% rename("CriticizeUSimmigrationProcess" = X.30)
-openended <- openended %>% rename("RisktakingBrave" = X.31)
-openended <- openended %>% rename("ContributionsToUS" = X.32)
-openended <- openended %>% rename("AreTryingOrShouldTryToBecomeLegal" = X.33)
-openended <- openended %>% rename("NobodyIllegalOnStolenLand" = X.34)
-openended <- openended %>% rename("USdoesn'tTreatWell" = X.35)
-openended <- openended %>% rename("AmericanDream" = X.36)
-openended <- openended %>% rename("UnfairDisrespectfulToLegalImmigrantsAndCitizens" = X.37)
-openended <- openended %>% rename("AntiUnauthorizedImmigration=Racism" = X.38)
-openended <- openended %>% rename("RespondentTalksAboutTheirConnectionExperience" = X.39)
-openended <- openended %>% rename("OppositionToTerminology" = X.40)
-openended <- openended %>% rename("HispanicLatino" = Hispanic/Latino)
-openended <- openended %>% rename("HispanicLatino" = "Hispanic/Latino")
-openended <- openended %>% rename("NotHispanicLatino" = "NotHispanic/Latino")
-openended <- openended %>% rename("NotHispanicLatino" = "Not Hispanic/Latino")
-openended <- openended %>% rename("ThirdWorldPoorCountry" = "Third World/Poor Country")
-openended <- openended %>% rename("JobAmericansDoNotWant" = "Job Americans Don't Want")
-openended <- openended %>% rename("FamilyOriented" = "Family-oriented")
-openended <- openended %>% rename("ReligiousChurchgoing" = "Religious/church-oriented")
-openended <- openended %>% rename("ReligiousChurchgoing" = "Religious/church-going")
+fullsurvey <- fullsurvey %>% rename("HispanicLatino" = "Hispanic.Latino")
+fullsurvey <- fullsurvey %>% rename("NotHispanicLatino" = "Not.Hispanic.Latino")
+fullsurvey <- fullsurvey %>% rename("LatinAmerica" = "Latin.America")
+fullsurvey <- fullsurvey %>% rename("MiddleEast" = "Middle.East")
+fullsurvey <- fullsurvey %>% rename("ThirdWorldPoorCountry" = "Third.world.poor.country")
+fullsurvey <- fullsurvey %>% rename("JobAmericansDoNotWant" = "Job.Americans.Don.t.Want")
+fullsurvey <- fullsurvey %>% rename("FamilyOriented" = "Family.oriented")
+fullsurvey <- fullsurvey %>% rename("ReligiousChurchgoing" = "Religious.church.going")
+fullsurvey <- fullsurvey %>% rename("PoorLowSocioeconomicStatus" = "Poor.low.socio.economic.status")
+fullsurvey <- fullsurvey %>% rename("StealingAmericansJobs" = "Stealing.American.s.Jobs")
+fullsurvey <- fullsurvey %>% rename("SeekingWelfare" = "Seeking.welfare")
+fullsurvey <- fullsurvey %>% rename("BetterLife" = "Better.life")
+fullsurvey <- fullsurvey %>% rename("FleeingEscapingHardship" = "Fleeing.escaping.hardship")
+fullsurvey <- fullsurvey %>% rename("No'Typical'UnauthorizedImmigrant" = "No..typical..unauthorized.immigrant")
+fullsurvey <- fullsurvey %>% rename("CriticizeUSimmigrationProcess" = "Criticize.US.immigration.process")
+fullsurvey <- fullsurvey %>% rename("RiskTakingBrave" = "Risk.taking..brave")
+fullsurvey <- fullsurvey %>% rename("ContributionsToUS" = "Contributions.to.U.S.")
+fullsurvey <- fullsurvey %>% rename("AreTryingOrShouldTryToBecomeLegal" = "Are.trying.or.should.try.to.become.legal")
+fullsurvey <- fullsurvey %>% rename("NobodyIllegalOnStolenLand" = "Nobody.illegal.on.stolen.land")
+fullsurvey <- fullsurvey %>% rename("USdoesNotTreatWell" = "US.doesn.t.treat.well")
+fullsurvey <- fullsurvey %>% rename("AmericanDream" = "American.dream")
+fullsurvey <- fullsurvey %>% rename("UnfairDisrespectfulToLegalImmigrantsAndCitizens" = "Unfair.disrespectful.to.legal.immigrants.and.citizens")
+fullsurvey <- fullsurvey %>% rename("AntiUnauthorizedImmigrationRacism" = "Anti.unauthorized.immigration...racism")
+fullsurvey <- fullsurvey %>% rename("RespondentTalksAboutTheirConnectionExperience" = "Respondent.talks.about.their.connection.experience")
+fullsurvey <- fullsurvey %>% rename("OppositionToTerminology" = "Opposition.to.terminology")
+fullsurvey <- fullsurvey %>% rename("AntiUnauthorizedImmigration=Racism" = "AntiUnauthorizedImmigrationRacism")
 
 ## 3. Exploratory data analysis
 # similar to what I did with unlawful and Unlawful
+fullsurvey %>%
+  +   ggplot(aes(x = hardworking)) +
+  +   geom_histogram(y = after_stat(count/sum(count))) +
+  + stat_bin(binwidth = 0.25) +
+  +   facet_wrap(~Family.oriented)
+# try to get Y axis to change to percentage of total respondents (# of respondents that gave rating / # that didn't mention it)
+# of respondents who gave rating / # who did mention
+
 
 
 
