@@ -264,7 +264,7 @@ fullsurvey <- fullsurvey %>% rename("StealingAmericansJobs" = "Stealing.American
 fullsurvey <- fullsurvey %>% rename("SeekingWelfare" = "Seeking.welfare")
 fullsurvey <- fullsurvey %>% rename("BetterLife" = "Better.life")
 fullsurvey <- fullsurvey %>% rename("FleeingEscapingHardship" = "Fleeing.escaping.hardship")
-fullsurvey <- fullsurvey %>% rename("No'Typical'UnauthorizedImmigrant" = "No..typical..unauthorized.immigrant")
+fullsurvey <- fullsurvey %>% rename("NoTypicalUnauthorizedImmigrant" = "No..typical..unauthorized.immigrant")
 fullsurvey <- fullsurvey %>% rename("CriticizeUSimmigrationProcess" = "Criticize.US.immigration.process")
 fullsurvey <- fullsurvey %>% rename("RiskTakingBrave" = "Risk.taking..brave")
 fullsurvey <- fullsurvey %>% rename("ContributionsToUS" = "Contributions.to.U.S.")
@@ -281,13 +281,62 @@ fullsurvey <- fullsurvey %>% rename("AntiUnauthorizedImmigration=Racism" = "Anti
 ## 3. Exploratory data analysis
 # similar to what I did with unlawful and Unlawful
 fullsurvey %>%
-  +   ggplot(aes(x = hardworking)) +
-  +   geom_histogram(y = after_stat(count/sum(count))) +
-  + stat_bin(binwidth = 0.25) +
-  +   facet_wrap(~Family.oriented)
+  ggplot(aes(x = hardworking)) +
+  geom_histogram(y = after_stat(count/sum(count))) +
+  stat_bin(binwidth = 0.25) +
+  facet_wrap(~Family.oriented)
 # try to get Y axis to change to percentage of total respondents (# of respondents that gave rating / # that didn't mention it)
 # of respondents who gave rating / # who did mention
+#some interesting ones I found
+fullsurvey %>%
+  ggplot(aes(x = unlawful)) +
+  geom_bar() +
+  facet_wrap(~CriticizeUSimmigrationProcess)
 
+fullsurvey %>%
+  ggplot(aes(x = hardworking)) +
+  geom_bar() +
+  facet_wrap(~FleeingEscapingHardship)
+
+fullsurvey %>%
+  ggplot(aes(x = lazy)) +
+  geom_bar() +
+  facet_wrap(~FleeingEscapingHardship)
+
+#similar to Isaiah's unlawful vs Unlawful plot
+fullsurvey %>%
+  ggplot(aes(x = hardworking)) +
+  geom_bar() +
+  facet_wrap(~Hardworking)
+
+fullsurvey %>%
+  ggplot(aes(x = immoral)) +
+  geom_bar() +
+  facet_wrap(~BetterLife)
+
+#thought this would be more negatively correlated
+fullsurvey %>%
+  ggplot(aes(x = unlawful)) +
+  geom_bar() +
+  facet_wrap(~BetterLife)
+
+#Thought this would be more positively correlated
+fullsurvey %>%
+  ggplot(aes(x = loyal)) +
+  geom_bar() +
+  facet_wrap(~FamilyOriented)
+
+fullsurvey %>%
+  ggplot(aes(x = unlawful)) +
+  geom_bar() +
+  facet_wrap(~FamilyOriented)
+
+
+#look at treatment differences (illegal vs. undocumented) between open-ended variables
+#look to combine the open-ended responses into positive and negative and see how they compare
+#look at the means and the difference between two means (paired t-test, chi squared for closed-ended)
+#condense positive and negative terms into one variable (open-ended) and then compare (difference b/n two means)
+#potentially do a clustered bar chart, do percentages instead of count, add labels for the ratings (1 is NA, etc)
 
 
 
