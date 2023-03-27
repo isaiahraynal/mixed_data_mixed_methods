@@ -12,6 +12,8 @@ library(psych)
 library(corrplot)
 library("psych")
 library(car)
+library(ggpubr)
+library(stats)
 
 ## IMPORT SURVEY DATA ##
 
@@ -331,12 +333,41 @@ fullsurvey %>%
   geom_bar() +
   facet_wrap(~FamilyOriented)
 
+##gives percentages instead of count
+U0 <- fullsurvey %>%
+  filter(Unlawful == 0) %>%
+  ggplot() +
+  geom_bar(aes(x = unlawful, y = after_stat(count/sum(count))))
+U1 <- fullsurvey %>%
+  filter(Unlawful == 1) %>%
+  ggplot() +
+  geom_bar(aes(x = unlawful, y = after_stat(count/sum(count))))
+ggarrange(U0, U1)
 
 #look at treatment differences (illegal vs. undocumented) between open-ended variables
+ill_treatment_positive <- c(fullsurvey$ill_honest, fullsurvey$ill_hardworking, fullsurvey$ill_intelligent, fullsurvey$ill_loyal, fullsurvey$ill_responsible)
+undoc_treatment_positive <- c(fullsurvey$undoc_honest, fullsurvey$undoc_hardworking, fullsurvey$undoc_intelligent, fullsurvey$undoc_loyal, fullsurvey$undoc_responsible)
+ill_treatment_negative <- c(fullsurvey$ill_unlawful, fullsurvey$ill_violent, fullsurvey$ill_uneducated, fullsurvey$ill_lazy, fullsurvey$ill_immoral)
+undoc_treatment_negative <- c(fullsurvey$undoc_unlawful, fullsurvey$undoc_violent, fullsurvey$undoc_uneducated, fullsurvey$undoc_lazy, fullsurvey$undoc_immoral)
+#mean(treatment, na.rm = TRUE)
+
 #look to combine the open-ended responses into positive and negative and see how they compare
-#look at the means and the difference between two means (paired t-test, chi squared for closed-ended)
+positive <- c(fullsurvey$honest, fullsurvey$hardworking, fullsurvey$intelligent, fullsurvey$loyal, fullsurvey$responsible)
+mean(positive, na.rm = TRUE)
+negative <- c(fullsurvey$unlawful, fullsurvey$violent, fullsurvey$uneducated, fullsurvey$lazy, fullsurvey$immoral)
+mean(negative, na.rm = TRUE)
 #condense positive and negative terms into one variable (open-ended) and then compare (difference b/n two means)
+t.test(positive, negative)
+
+#look at the means and the difference between two means (paired t-test, chi squared for closed-ended)
 #potentially do a clustered bar chart, do percentages instead of count, add labels for the ratings (1 is NA, etc)
+#focus on variables that appear more often, possibly combine some
+fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1, 1, 0)
+fullsurvey %>%
+  ggplot(aes(x = unlawful)) +
+  geom_bar() +
+  facet_wrap(~Positive)
+
 
 
 
