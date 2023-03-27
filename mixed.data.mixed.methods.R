@@ -350,6 +350,7 @@ undoc_treatment_positive <- c(fullsurvey$undoc_honest, fullsurvey$undoc_hardwork
 ill_treatment_negative <- c(fullsurvey$ill_unlawful, fullsurvey$ill_violent, fullsurvey$ill_uneducated, fullsurvey$ill_lazy, fullsurvey$ill_immoral)
 undoc_treatment_negative <- c(fullsurvey$undoc_unlawful, fullsurvey$undoc_violent, fullsurvey$undoc_uneducated, fullsurvey$undoc_lazy, fullsurvey$undoc_immoral)
 #mean(treatment, na.rm = TRUE)
+#do treatment difference for open-ended
 
 #look to combine the open-ended responses into positive and negative and see how they compare
 positive <- c(fullsurvey$honest, fullsurvey$hardworking, fullsurvey$intelligent, fullsurvey$loyal, fullsurvey$responsible)
@@ -362,11 +363,26 @@ t.test(positive, negative)
 #look at the means and the difference between two means (paired t-test, chi squared for closed-ended)
 #potentially do a clustered bar chart, do percentages instead of count, add labels for the ratings (1 is NA, etc)
 #focus on variables that appear more often, possibly combine some
-fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1, 1, 0)
+fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1 | fullsurvey$FamilyOriented, 1, 0)
 fullsurvey %>%
   ggplot(aes(x = unlawful)) +
   geom_bar() +
   facet_wrap(~Positive)
+fullsurvey$positive <- rowMeans(fullsurvey[,c("hardworking","honest","intelligent","loyal","responsible")],na.rm = TRUE)
+fullsurvey %>%
+  ggplot(aes(x = positive)) +
+  geom_bar() +
+  facet_wrap(~Positive)
+fullsurvey$negative <- rowMeans(fullsurvey[,c("unlawful","violent","lazy","uneducated","immoral")],na.rm = TRUE)
+fullsurvey %>%
+  ggplot(aes(x = negative)) +
+  geom_bar() +
+  facet_wrap(~Positive)
+
+#run t-test on treatment differences
+#include all adjectives in the comparison
+#work on formatting
+
 
 
 
