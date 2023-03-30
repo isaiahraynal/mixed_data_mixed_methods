@@ -363,7 +363,7 @@ t.test(positive, negative)
 #look at the means and the difference between two means (paired t-test, chi squared for closed-ended)
 #potentially do a clustered bar chart, do percentages instead of count, add labels for the ratings (1 is NA, etc)
 #focus on variables that appear more often, possibly combine some
-fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1 | fullsurvey$FamilyOriented, 1, 0)
+fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1 | fullsurvey$FamilyOriented == 1, 1, 0)
 fullsurvey %>%
   ggplot(aes(x = unlawful)) +
   geom_bar() +
@@ -379,8 +379,36 @@ fullsurvey %>%
   geom_bar() +
   facet_wrap(~Positive)
 
-#run t-test on treatment differences
-#include all adjectives in the comparison
+#closed-ended positive vs open-ended top 3 positive
+fullsurvey$positive <- rowMeans(fullsurvey[,c("hardworking","honest","intelligent","loyal","responsible")],na.rm = TRUE)
+fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1 | fullsurvey$FamilyOriented == 1, 1, 0)
+fullsurvey %>%
+  ggplot(aes(x = positive)) +
+  geom_bar() +
+  facet_wrap(~Positive)
+#closed-ended positive vs same variables open-ended positive
+fullsurvey$positive <- rowMeans(fullsurvey[,c("hardworking","honest","intelligent","loyal","responsible")],na.rm = TRUE)
+fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$Honest == 1 | fullsurvey$Intelligent == 1 | fullsurvey$Loyal == 1 | fullsurvey$Responsible == 1, 1, 0)
+fullsurvey %>%
+  ggplot(aes(x = positive)) +
+  geom_bar() +
+  facet_wrap(~Positive)
+#closed-ended negative vs same variables open-ended negative
+fullsurvey$negative <- rowMeans(fullsurvey[,c("unlawful","violent","uneducated","lazy","immoral")],na.rm = TRUE)
+fullsurvey$Negative <- ifelse(fullsurvey$Unlawful == 1 | fullsurvey$Violent == 1 | fullsurvey$Uneducated == 1 | fullsurvey$Lazy == 1 | fullsurvey$Immoral == 1, 1, 0)
+fullsurvey %>%
+  ggplot(aes(x = negative)) +
+  geom_bar() +
+  facet_wrap(~Negative)
+#compare positive to negative
+fullsurvey %>%
+  ggplot(aes(x = negative)) +
+  geom_bar() +
+  facet_wrap(~Positive)
+fullsurvey %>%
+  ggplot(aes(x = positive)) +
+  geom_bar() +
+  facet_wrap(~Negative)
 #work on formatting
 
 
