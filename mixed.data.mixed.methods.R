@@ -351,6 +351,7 @@ ill_treatment_negative <- c(fullsurvey$ill_unlawful, fullsurvey$ill_violent, ful
 undoc_treatment_negative <- c(fullsurvey$undoc_unlawful, fullsurvey$undoc_violent, fullsurvey$undoc_uneducated, fullsurvey$undoc_lazy, fullsurvey$undoc_immoral)
 #mean(treatment, na.rm = TRUE)
 #do treatment difference for open-ended
+#make appointment with CITL
 
 #look to combine the open-ended responses into positive and negative and see how they compare
 positive <- c(fullsurvey$honest, fullsurvey$hardworking, fullsurvey$intelligent, fullsurvey$loyal, fullsurvey$responsible)
@@ -381,18 +382,17 @@ fullsurvey %>%
 
 #closed-ended positive vs open-ended top 3 positive
 fullsurvey$positive <- rowMeans(fullsurvey[,c("hardworking","honest","intelligent","loyal","responsible")],na.rm = TRUE)
-fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1 | fullsurvey$FamilyOriented == 1, 1, 0)
+fullsurvey$Positive3 <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1 | fullsurvey$FamilyOriented == 1, 1, 0)
 fullsurvey %>%
   ggplot(aes(x = positive)) +
   geom_bar() +
-  facet_wrap(~Positive)
+  facet_wrap(~Positive3)
 #closed-ended positive vs same variables open-ended positive
-fullsurvey$positive <- rowMeans(fullsurvey[,c("hardworking","honest","intelligent","loyal","responsible")],na.rm = TRUE)
-fullsurvey$Positive <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$Honest == 1 | fullsurvey$Intelligent == 1 | fullsurvey$Loyal == 1 | fullsurvey$Responsible == 1, 1, 0)
+fullsurvey$PositiveAll <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$Honest == 1 | fullsurvey$Intelligent == 1 | fullsurvey$Loyal == 1 | fullsurvey$Responsible == 1, 1, 0)
 fullsurvey %>%
   ggplot(aes(x = positive)) +
   geom_bar() +
-  facet_wrap(~Positive)
+  facet_wrap(~PositiveAll)
 #closed-ended negative vs same variables open-ended negative
 fullsurvey$negative <- rowMeans(fullsurvey[,c("unlawful","violent","uneducated","lazy","immoral")],na.rm = TRUE)
 fullsurvey$Negative <- ifelse(fullsurvey$Unlawful == 1 | fullsurvey$Violent == 1 | fullsurvey$Uneducated == 1 | fullsurvey$Lazy == 1 | fullsurvey$Immoral == 1, 1, 0)
@@ -409,8 +409,49 @@ fullsurvey %>%
   ggplot(aes(x = positive)) +
   geom_bar() +
   facet_wrap(~Negative)
-#work on formatting
 
+#work on formatting graphs to make them more aesthetically pleasing for the 5 graphs
+#tried using percentages for the y-axis, it seems like it worked for the 'yes' category but no the 'no' category
+#positive vs Positive3
+fullsurvey %>%
+  ggplot(aes(x = positive)) +
+  geom_bar() +
+  facet_wrap(~Positive3, scales = "free_y") +
+  labs(title = "Top 3 Positive Descriptors and Their Applicability", subtitle = "Mention of Positive Descriptor", x = "Applicability of Positive Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
+fullsurvey$Positive3[fullsurvey$Positive3 == 0] <- "No"
+fullsurvey$Positive3[fullsurvey$Positive3 == 1] <- "Yes"
+#positive vs Positive
+fullsurvey %>%
+  ggplot(aes(x = positive)) +
+  geom_bar() +
+  facet_wrap(~PositiveAll, scales = "free_y") +
+  labs(title = "Positive Descriptors and Their Applicability", subtitle = "Mention of Positive Descriptor", x = "Applicability of Positive Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
+fullsurvey$PositiveAll[fullsurvey$PositiveAll == 0] <- "No"
+fullsurvey$PositiveAll[fullsurvey$PositiveAll == 1] <- "Yes"
+#negative vs Negative
+fullsurvey %>%
+  ggplot(aes(x = negative)) +
+  geom_bar() +
+  facet_wrap(~Negative, scales = "free_y") +
+  labs(title = "Negative Descriptors and Their Applicability", subtitle = "Mention of Negative Descriptor", x = "Applicability of Negative Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
+fullsurvey$Negative[fullsurvey$Negative == 0] <- "No"
+fullsurvey$Negative[fullsurvey$Negative == 1] <- "Yes"
+#negative vs Positive
+fullsurvey %>%
+  ggplot(aes(x = negative)) +
+  geom_bar() +
+  facet_wrap(~PositiveAll) +
+  labs(title = "Relationship Between Negative Open-ended and Positive Closed-ended Responses", subtitle = "Mention of Positive Descriptor", x = "Applicability of Negative Descriptor (1 is NA, 5 is VA)", y = "Count")
+#positive vs Negative
+fullsurvey %>%
+  ggplot(aes(x = positive)) +
+  geom_bar() +
+  facet_wrap(~Negative) +
+  labs(title = "Relationship Between Positive Open-ended and Negative Closed-ended Responses", subtitle = "Mention of Negative Descriptor", x = "Applicability of Positive Descriptor (1 is NA, 5 is VA)", y = "Count")
+
+
+fullsurvey$PositiveAll <- as.factor(fullsurvey$PositiveAll)
+geom_bar(aes(x = `answering the question`, fill = side), position = position_dodge(preserve = 'single'), alpha = 0.5)
 
 
 
