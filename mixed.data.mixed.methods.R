@@ -412,48 +412,61 @@ fullsurvey %>%
 
 #work on formatting graphs to make them more aesthetically pleasing for the 5 graphs
 #tried using percentages for the y-axis, it seems like it worked for the 'yes' category but no the 'no' category
+
+fullsurvey$positive <- rowMeans(fullsurvey[,c("hardworking","honest","intelligent","loyal","responsible")],na.rm = TRUE)
+fullsurvey$Positive3 <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$BetterLife == 1 | fullsurvey$FamilyOriented == 1, 1, 0)
+fullsurvey$PositiveAll <- ifelse(fullsurvey$Hardworking == 1 | fullsurvey$Honest == 1 | fullsurvey$Intelligent == 1 | fullsurvey$Loyal == 1 | fullsurvey$Responsible == 1, 1, 0)
+fullsurvey$negative <- rowMeans(fullsurvey[,c("unlawful","violent","uneducated","lazy","immoral")],na.rm = TRUE)
+fullsurvey$Negative <- ifelse(fullsurvey$Unlawful == 1 | fullsurvey$Violent == 1 | fullsurvey$Uneducated == 1 | fullsurvey$Lazy == 1 | fullsurvey$Immoral == 1, 1, 0)
 #positive vs Positive3
 fullsurvey %>%
-  ggplot(aes(x = positive)) +
-  geom_bar() +
-  facet_wrap(~Positive3, scales = "free_y") +
+  ggplot(aes(x = positive, y = 100*after_stat(count/sum(count)))) +
+  geom_bar(col = "blue") +
+  facet_wrap(~Positive3) +
   labs(title = "Top 3 Positive Descriptors and Their Applicability", subtitle = "Mention of Positive Descriptor", x = "Applicability of Positive Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
 fullsurvey$Positive3[fullsurvey$Positive3 == 0] <- "No"
 fullsurvey$Positive3[fullsurvey$Positive3 == 1] <- "Yes"
 #positive vs Positive
 fullsurvey %>%
+  ggplot(aes(x = positive, y = 100*after_stat(count/sum(count)), fill = PositiveAll)) +
+  geom_bar() +
+  facet_wrap(~PositiveAll) +
+  scale_fill_manual(values = c("red","green")) +
+  labs(title = "Relationship Between Positive Closed- and Open-ended Responses", subtitle = "Mention of Positive Descriptor in Open-ended Response", x = "Applicability of Positive Descriptor in Closed-ended Reponse (1 is NA, 5 is VA)", y = "% of Responses")
+fullsurvey %>%
   ggplot(aes(x = positive)) +
   geom_bar() +
-  facet_wrap(~PositiveAll, scales = "free_y") +
+  facet_wrap(~PositiveAll) +
   labs(title = "Positive Descriptors and Their Applicability", subtitle = "Mention of Positive Descriptor", x = "Applicability of Positive Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
 fullsurvey$PositiveAll[fullsurvey$PositiveAll == 0] <- "No"
 fullsurvey$PositiveAll[fullsurvey$PositiveAll == 1] <- "Yes"
 #negative vs Negative
 fullsurvey %>%
-  ggplot(aes(x = negative)) +
+  ggplot(aes(x = negative, y = 100*after_stat(count/sum(count)))) +
   geom_bar() +
-  facet_wrap(~Negative, scales = "free_y") +
-  labs(title = "Negative Descriptors and Their Applicability", subtitle = "Mention of Negative Descriptor", x = "Applicability of Negative Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
+  facet_wrap(~Negative) +
+  labs(title = "Negative Descriptors and Their Applicability", subtitle = "Mention of Negative Descriptor", x = "Applicability of Negative Descriptor (1 is Low Applicability, 5 is High Applicability)", y = "% of Responses")
 fullsurvey$Negative[fullsurvey$Negative == 0] <- "No"
 fullsurvey$Negative[fullsurvey$Negative == 1] <- "Yes"
 #negative vs Positive
 fullsurvey %>%
-  ggplot(aes(x = negative)) +
+  ggplot(aes(x = negative, y = 100*after_stat(count/sum(count)))) +
   geom_bar() +
   facet_wrap(~PositiveAll) +
-  labs(title = "Relationship Between Negative Open-ended and Positive Closed-ended Responses", subtitle = "Mention of Positive Descriptor", x = "Applicability of Negative Descriptor (1 is NA, 5 is VA)", y = "Count")
+  labs(title = "Relationship Between Negative Closed-ended and Positive Open-ended Responses", subtitle = "Mention of Positive Descriptor", x = "Applicability of Negative Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
 #positive vs Negative
 fullsurvey %>%
-  ggplot(aes(x = positive)) +
-  geom_bar() +
+  ggplot(aes(x = positive, y = 100*after_stat(count/sum(count)))) +
+  geom_bar(color = "positive") +
   facet_wrap(~Negative) +
-  labs(title = "Relationship Between Positive Open-ended and Negative Closed-ended Responses", subtitle = "Mention of Negative Descriptor", x = "Applicability of Positive Descriptor (1 is NA, 5 is VA)", y = "Count")
+  labs(title = "Relationship Between Positive Closed-ended and Negative Open-ended Responses", subtitle = "Mention of Negative Descriptor", x = "Applicability of Positive Descriptor (1 is NA, 5 is VA)", y = "% of Responses")
 
 
 fullsurvey$PositiveAll <- as.factor(fullsurvey$PositiveAll)
 geom_bar(aes(x = `answering the question`, fill = side), position = position_dodge(preserve = 'single'), alpha = 0.5)
-
-
+#find a way to switch the order of 'yes' and 'no' in the graphs
+#alter legend either no title or new title
+#include count and percentage graphs for each
 
 
 \end{document}
