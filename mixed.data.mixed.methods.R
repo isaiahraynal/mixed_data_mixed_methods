@@ -430,33 +430,31 @@ fullsurvey$Negative[fullsurvey$Negative == 1] <- "Yes"
 fullsurvey$Positive3 <- factor(fullsurvey$Positive3, levels = c("Yes","No"))
 fullsurvey$PositiveAll <- factor(fullsurvey$PositiveAll, levels = c("Yes","No"))
 fullsurvey$Negative <- factor(fullsurvey$Negative, levels = c("Yes","No"))
+
 #positive vs Positive3
 fullsurvey %>%
   ggplot(aes(x = positive, fill = Positive3)) +
   geom_bar() +
   facet_wrap(~Positive3) +
   scale_fill_manual(values = c("green","red")) +
-  labs(title = "Relationship Between Top 3 Positive Closed- and Open-ended Responses", subtitle = "Mention of Positive Descriptor in Open-ended Response", x = "Applicability of Positive Descriptor, in Closed-ended Response", y = "Count", fill = NULL)
-fullsurvey$Positive3[fullsurvey$Positive3 == 0] <- "No"
-fullsurvey$Positive3[fullsurvey$Positive3 == 1] <- "Yes"
+  labs(title = "Mention of Common Descriptor in Open-ended Response", x = "Applicability of Positive Descriptor in Closed-ended Response", y = "Count", fill = NULL)
+
 #positive vs PositiveAll
 fullsurvey %>%
   ggplot(aes(x = positive, fill = PositiveAll)) +
   geom_bar() +
   facet_wrap(~PositiveAll) +
   scale_fill_manual(values = c("green","red")) +
-  labs(title = "Relationship Between Positive Closed- and Open-ended Responses", subtitle = "Mention of Positive Descriptor in Open-ended Response", x = "Applicability of Positive Descriptor in Closed-ended Response", y = "Count", fill = NULL)
-fullsurvey$PositiveAll[fullsurvey$PositiveAll == 0] <- "No"
-fullsurvey$PositiveAll[fullsurvey$PositiveAll == 1] <- "Yes"
+  labs(title = "Mention of Positive Descriptor in Open-ended Response", x = "Applicability of Positive Descriptor in Closed-ended Response", y = "Count", fill = NULL)
+
 #negative vs Negative
 fullsurvey %>%
   ggplot(aes(x = negative, fill = Negative)) +
   geom_bar() +
   facet_wrap(~Negative) +
   scale_fill_manual(values = c("firebrick","forestgreen")) +
-  labs(title = "Relationship Between Negative Closed- and Open-ended Responses", subtitle = "Mention of Negative Descriptor in Open-ended Response", x = "Applicability of Negative Descriptor in Closed-ended Response", y = "Count", fill = NULL)
-fullsurvey$Negative[fullsurvey$Negative == 0] <- "No"
-fullsurvey$Negative[fullsurvey$Negative == 1] <- "Yes"
+  labs(title = "Mention of Negative Descriptor in Open-ended Response", x = "Applicability of Negative Descriptor in Closed-ended Response", y = "Count", fill = NULL)
+
 
 #negative vs Positive
 fullsurvey %>%
@@ -474,9 +472,9 @@ fullsurvey %>%
 
 fullsurvey$PositiveAll <- as.factor(fullsurvey$PositiveAll)
 geom_bar(aes(x = `answering the question`, fill = side), position = position_dodge(preserve = 'single'), alpha = 0.5)
-#find a way to switch the order of 'yes' and 'no' in the graphs
-#alter legend either no title or new title
-#include count and percentage graphs for each
+
+
+table(fullsurvey$positive, fullsurvey$NoTypicalUnauthorizedImmigrant)
 
 
 
