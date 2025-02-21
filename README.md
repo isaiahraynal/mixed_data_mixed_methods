@@ -1,5 +1,5 @@
-## What do respondents really mean? Using mixed data and methods to interpret mixed results
-Dataset and code for using mixed data and mixed methods to analyze public attitudes towards unauthorized immigrants.
+## Advocating for the Use of Closed- and Open-Ended Questions on Surveys about People's Attitudes
+[Advocating for the Use of Closed- and Open-Ended Questions on Surveys about People's Attitudes](https://www.linkedin.com/pulse/advocating-use-closed-open-ended-questions-surveys-peoples-raynal-jvhlc/?trackingId=n%2B8u7IpETou0uZKKl5vMcQ%3D%3D)
 
 ### Files
 
